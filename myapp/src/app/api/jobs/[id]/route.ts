@@ -15,7 +15,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: "Job not found" }, { status: 404 });
     }
     return NextResponse.json(job);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to update job" }, { status: 500 });
   }
 }
@@ -29,7 +29,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       return NextResponse.json({ error: "Job not found" }, { status: 404 });
     }
     return NextResponse.json({ message: "Job deleted successfully" });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to delete job" }, { status: 500 });
   }
 }

@@ -1,9 +1,25 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from "recharts";
-import { FileText, CheckCircle2, AlertCircle, Copy, Upload, Target, Brain, Sparkles } from "lucide-react";
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import {
+  FileText,
+  CheckCircle2,
+  AlertCircle,
+  Upload,
+  Target,
+  Brain,
+  Sparkles,
+} from "lucide-react";
 import { useCareerStore } from "@/store/useCareerStore";
 
 export default function ResumeMatcher() {
@@ -22,40 +38,78 @@ export default function ResumeMatcher() {
 
   const analyzeMatch = () => {
     if (!jobDescription.trim() || !currentResume) return;
-    
+
     setIsAnalyzing(true);
-    
+
     setTimeout(() => {
       const skillsToCheck = currentResume.skills;
       const jdLower = jobDescription.toLowerCase();
-      
-      const matchedSkills = skillsToCheck.filter((skill) => 
-        jdLower.includes(skill.toLowerCase())
+
+      const matchedSkills = skillsToCheck.filter((skill) =>
+        jdLower.includes(skill.toLowerCase()),
       );
-      
-      const importantSkills = ["React", "Next.js", "TypeScript", "Node.js", "JavaScript", "Tailwind", "CSS", "HTML"];
-      const missingSkills = importantSkills.filter((skill) => 
-        !jdLower.includes(skill.toLowerCase()) && matchedSkills.includes(skill)
-      );
-      
-      const percentage = Math.round((matchedSkills.length / skillsToCheck.length) * 100);
-      
-      const radarData = [
-        { subject: "React", A: matchedSkills.includes("React") ? 100 : 30, fullMark: 100 },
-        { subject: "Next.js", A: matchedSkills.includes("Next.js") ? 100 : 25, fullMark: 100 },
-        { subject: "TypeScript", A: matchedSkills.includes("TypeScript") ? 100 : 40, fullMark: 100 },
-        { subject: "Node.js", A: matchedSkills.includes("Node.js") ? 100 : 35, fullMark: 100 },
-        { subject: "Tailwind", A: matchedSkills.includes("Tailwind") || matchedSkills.includes("Tailwind CSS") ? 100 : 20, fullMark: 100 },
-        { subject: "GSAP", A: matchedSkills.includes("GSAP") ? 100 : 15, fullMark: 100 },
+
+      const importantSkills = [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Node.js",
+        "JavaScript",
+        "Tailwind",
+        "CSS",
+        "HTML",
       ];
-      
+
+      const percentage = Math.round(
+        (matchedSkills.length / skillsToCheck.length) * 100,
+      );
+
+      const radarData = [
+        {
+          subject: "React",
+          A: matchedSkills.includes("React") ? 100 : 30,
+          fullMark: 100,
+        },
+        {
+          subject: "Next.js",
+          A: matchedSkills.includes("Next.js") ? 100 : 25,
+          fullMark: 100,
+        },
+        {
+          subject: "TypeScript",
+          A: matchedSkills.includes("TypeScript") ? 100 : 40,
+          fullMark: 100,
+        },
+        {
+          subject: "Node.js",
+          A: matchedSkills.includes("Node.js") ? 100 : 35,
+          fullMark: 100,
+        },
+        {
+          subject: "Tailwind",
+          A:
+            matchedSkills.includes("Tailwind") ||
+            matchedSkills.includes("Tailwind CSS")
+              ? 100
+              : 20,
+          fullMark: 100,
+        },
+        {
+          subject: "GSAP",
+          A: matchedSkills.includes("GSAP") ? 100 : 15,
+          fullMark: 100,
+        },
+      ];
+
       setMatchResult({
         percentage,
         matchedSkills,
-        missingSkills: importantSkills.filter(s => !matchedSkills.includes(s)),
+        missingSkills: importantSkills.filter(
+          (s) => !matchedSkills.includes(s),
+        ),
         radarData,
       });
-      
+
       setIsAnalyzing(false);
     }, 1500);
   };
@@ -70,7 +124,9 @@ export default function ResumeMatcher() {
     <div className="h-full">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-white mb-1">Resume Matcher</h1>
-        <p className="text-slate-400">Match your resume against job descriptions and see your compatibility</p>
+        <p className="text-slate-400">
+          Match your resume against job descriptions and see your compatibility
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -93,9 +149,12 @@ export default function ResumeMatcher() {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold text-white">{resume.name}</h3>
+                      <h3 className="font-semibold text-white">
+                        {resume.name}
+                      </h3>
                       <p className="text-sm text-slate-400">
-                        {resume.skills.length} skills • Updated {new Date(resume.createdAt).toLocaleDateString()}
+                        {resume.skills.length} skills • Updated{" "}
+                        {new Date(resume.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                     {selectedResume === resume.id && (
@@ -147,17 +206,25 @@ export default function ResumeMatcher() {
                 className="bg-slate-900/50 border border-slate-800 rounded-2xl p-8 backdrop-blur-xl text-center"
               >
                 <div className="relative inline-block mb-4">
-                  <div className={`w-40 h-40 rounded-full bg-gradient-to-br ${getMatchColor(matchResult.percentage)} flex items-center justify-center shadow-2xl`}>
+                  <div
+                    className={`w-40 h-40 rounded-full bg-gradient-to-br ${getMatchColor(matchResult.percentage)} flex items-center justify-center shadow-2xl`}
+                  >
                     <div className="w-32 h-32 rounded-full bg-slate-900 flex items-center justify-center">
-                      <span className="text-4xl font-bold text-white">{matchResult.percentage}%</span>
+                      <span className="text-4xl font-bold text-white">
+                        {matchResult.percentage}%
+                      </span>
                     </div>
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Match Score</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  Match Score
+                </h3>
                 <p className="text-slate-400">
-                  {matchResult.percentage >= 80 ? "Excellent match! You're a strong candidate." :
-                   matchResult.percentage >= 60 ? "Good match! Consider applying." :
-                   "You may want to optimize your resume for this role."}
+                  {matchResult.percentage >= 80
+                    ? "Excellent match! You&apos;re a strong candidate."
+                    : matchResult.percentage >= 60
+                      ? "Good match! Consider applying."
+                      : "You may want to optimize your resume for this role."}
                 </p>
               </motion.div>
 
@@ -167,13 +234,28 @@ export default function ResumeMatcher() {
                 transition={{ delay: 0.1 }}
                 className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 backdrop-blur-xl"
               >
-                <h3 className="text-xl font-bold text-white mb-4">Skills Radar</h3>
+                <h3 className="text-xl font-bold text-white mb-4">
+                  Skills Radar
+                </h3>
                 <div className="h-72">
                   <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={matchResult.radarData}>
+                    <RadarChart
+                      cx="50%"
+                      cy="50%"
+                      outerRadius="70%"
+                      data={matchResult.radarData}
+                    >
                       <PolarGrid stroke="#334155" />
-                      <PolarAngleAxis dataKey="subject" tick={{ fill: "#94a3b8", fontSize: 12 }} />
-                      <PolarRadiusAxis angle={90} domain={[0, 100]} tick={false} axisLine={false} />
+                      <PolarAngleAxis
+                        dataKey="subject"
+                        tick={{ fill: "#94a3b8", fontSize: 12 }}
+                      />
+                      <PolarRadiusAxis
+                        angle={90}
+                        domain={[0, 100]}
+                        tick={false}
+                        axisLine={false}
+                      />
                       <Radar
                         name="Skills"
                         dataKey="A"
@@ -183,7 +265,11 @@ export default function ResumeMatcher() {
                         fillOpacity={0.3}
                       />
                       <Tooltip
-                        contentStyle={{ backgroundColor: "#0f172a", border: "1px solid #334155", borderRadius: "8px" }}
+                        contentStyle={{
+                          backgroundColor: "#0f172a",
+                          border: "1px solid #334155",
+                          borderRadius: "8px",
+                        }}
                         itemStyle={{ color: "#06b6d4" }}
                       />
                     </RadarChart>
@@ -200,7 +286,9 @@ export default function ResumeMatcher() {
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                    <h3 className="text-lg font-bold text-white">Matched Skills</h3>
+                    <h3 className="text-lg font-bold text-white">
+                      Matched Skills
+                    </h3>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {matchResult.matchedSkills.map((skill, i) => (
@@ -225,7 +313,9 @@ export default function ResumeMatcher() {
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <AlertCircle className="w-5 h-5 text-orange-400" />
-                    <h3 className="text-lg font-bold text-white">Missing Skills</h3>
+                    <h3 className="text-lg font-bold text-white">
+                      Missing Skills
+                    </h3>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {matchResult.missingSkills.map((skill, i) => (
@@ -240,7 +330,9 @@ export default function ResumeMatcher() {
                       </motion.span>
                     ))}
                     {matchResult.missingSkills.length === 0 && (
-                      <p className="text-slate-500 text-sm">No missing skills detected!</p>
+                      <p className="text-slate-500 text-sm">
+                        No missing skills detected!
+                      </p>
                     )}
                   </div>
                 </motion.div>
@@ -253,9 +345,12 @@ export default function ResumeMatcher() {
               <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Upload className="w-10 h-10 text-slate-500" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Ready to Match</h3>
+              <h3 className="text-xl font-bold text-white mb-2">
+                Ready to Match
+              </h3>
               <p className="text-slate-400">
-                Select a resume, paste a job description, and click "Analyze Match"
+                Select a resume, paste a job description, and click
+                &quot;Analyze Match&quot;
               </p>
             </div>
           )}

@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import {
   LayoutDashboard,
-  Briefcase,
   FileText,
   User,
   CalendarCheck,
@@ -11,7 +10,7 @@ import {
   Settings,
   Cpu,
 } from "lucide-react";
-import { useCareerStore } from "@/store/useCareerStore";
+import { useCareerStore, type CareerState } from "@/store/useCareerStore";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
@@ -53,18 +52,20 @@ export default function Sidebar() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
-              onClick={() => setActiveTab(item.id as any)}
+              onClick={() => setActiveTab(item.id as CareerState["activeTab"])}
               className={cn(
                 "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group",
                 isActive
                   ? "bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-cyan-300 border border-cyan-500/30 glow-cyan"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50",
               )}
             >
               <Icon
                 className={cn(
                   "w-5 h-5 transition-colors",
-                  isActive ? "text-cyan-400" : "text-slate-500 group-hover:text-slate-300"
+                  isActive
+                    ? "text-cyan-400"
+                    : "text-slate-500 group-hover:text-slate-300",
                 )}
               />
               <span className="font-medium">{item.label}</span>

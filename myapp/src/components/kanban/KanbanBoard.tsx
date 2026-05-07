@@ -13,7 +13,6 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
@@ -21,7 +20,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
-import { GripVertical, Plus, Trash2, Edit3, Calendar, Building2, Briefcase } from "lucide-react";
+import { GripVertical, Plus, Trash2, Edit3, Calendar } from "lucide-react";
 import { useCareerStore, type JobApplication, type JobStatus } from "@/store/useCareerStore";
 import { cn, getStatusColor, getStatusBg } from "@/lib/utils";
 
@@ -55,7 +54,6 @@ const SortableJobCard = ({ job, isOverlay }: SortableJobCardProps) => {
   };
 
   const deleteJob = useCareerStore((state) => state.deleteJob);
-  const updateJob = useCareerStore((state) => state.updateJob);
   const [showEdit, setShowEdit] = useState(false);
 
   return (

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Copy, Check, User, Briefcase, Code } from "lucide-react";
-import { useCareerStore } from "@/store/useCareerStore";
+import { useCareerStore, type BioVersion } from "@/store/useCareerStore";
 
 export default function AboutEngine() {
   const bioVersions = useCareerStore((state) => state.bioVersions);
@@ -18,27 +18,49 @@ export default function AboutEngine() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const handleEditStart = (bio: any) => {
+  const handleEditStart = (bio: BioVersion) => {
     setEditingId(bio.id);
     setEditValue(bio.content);
   };
 
-  const handleEditSave = (id: string) => {
-    updateBio(id as any, editValue);
+  const handleEditSave = (id: BioVersion["id"]) => {
+    updateBio(id, editValue);
     setEditingId(null);
   };
 
-  const versions = [
-    { id: "short", name: "Short Bio", icon: User, color: "from-cyan-500 to-blue-500" },
-    { id: "professional", name: "Professional", icon: Briefcase, color: "from-purple-500 to-pink-500" },
-    { id: "technical", name: "Technical", icon: Code, color: "from-green-500 to-emerald-500" },
+  const versions: {
+    id: BioVersion["id"];
+    name: string;
+    icon: React.ElementType;
+    color: string;
+  }[] = [
+    {
+      id: "short",
+      name: "Short Bio",
+      icon: User,
+      color: "from-cyan-500 to-blue-500",
+    },
+    {
+      id: "professional",
+      name: "Professional",
+      icon: Briefcase,
+      color: "from-purple-500 to-pink-500",
+    },
+    {
+      id: "technical",
+      name: "Technical",
+      icon: Code,
+      color: "from-green-500 to-emerald-500",
+    },
   ];
 
   return (
     <div className="h-full">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-white mb-1">About Engine</h1>
-        <p className="text-slate-400">Multiple bio versions for every occasion</p>
+        <p className="text-slate-400">
+          Multiple bio versions for every occasion
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -55,12 +77,23 @@ export default function AboutEngine() {
               className="glass-panel rounded-2xl p-6 gradient-border"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className={`w-12 h-12 bg-gradient-to-br ${version.color} rounded-xl flex items-center justify-center`}>
+                <div
+                  className={`w-12 h-12 bg-gradient-to-br ${version.color} rounded-xl flex items-center justify-center`}
+                >
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">{version.name}</h3>
-                  <p className="text-sm text-slate-500">Perfect for {version.id === "short" ? "social profiles" : version.id === "professional" ? "cover letters" : "technical roles"}</p>
+                  <h3 className="text-xl font-bold text-white">
+                    {version.name}
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    Perfect for{" "}
+                    {version.id === "short"
+                      ? "social profiles"
+                      : version.id === "professional"
+                        ? "cover letters"
+                        : "technical roles"}
+                  </p>
                 </div>
               </div>
 
@@ -109,7 +142,7 @@ export default function AboutEngine() {
                       )}
                     </button>
                     <button
-                      onClick={() => handleEditStart(bio)}
+                      onClick={() => bio && handleEditStart(bio)}
                       className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl font-semibold text-slate-300 transition-all duration-200"
                     >
                       Edit

@@ -30,7 +30,7 @@ export interface BioVersion {
   content: string;
 }
 
-interface CareerState {
+export interface CareerState {
   jobs: JobApplication[];
   resumes: Resume[];
   bioVersions: BioVersion[];
